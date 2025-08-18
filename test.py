@@ -47,41 +47,69 @@ encouragements = [
 # Streamlit UI 설정
 st.set_page_config(page_title="오늘의 명언 추천", layout="wide")
 
+# 반짝이는 카드 CSS
 st.markdown("""
-    <h1 style='text-align:center; color:#ff6600; font-family:"Nanum Gothic", sans-serif; font-size:50px;'>
-        ✨ 오늘의 기분 & 명언 ✨
-    </h1>
-    <p style='text-align:center; color:gray; font-size:18px;'>
-        오늘의 기분을 선택하면 어울리는 명언과 응원의 말을 드려요 🌷
-    </p>
+<style>
+@keyframes sparkle {
+  0% { box-shadow: 0 0 10px rgba(255,255,255,0.3); }
+  50% { box-shadow: 0 0 25px rgba(255,255,255,0.8); }
+  100% { box-shadow: 0 0 10px rgba(255,255,255,0.3); }
+}
+.sparkle-card {
+  animation: sparkle 1.5s ease-in-out 1;
+  border-radius: 25px;
+  padding: 60px;
+  background: linear-gradient(135deg, #f6d365, #fda085);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 40px;
+}
+.quote-text {
+  font-size: 36px;
+  font-weight: bold;
+  color: #2c3e50;
+  line-height: 1.4;
+}
+.quote-author {
+  font-size: 22px;
+  color: #34495e;
+  margin-top: 15px;
+}
+.quote-extra {
+  font-size: 20px;
+  color: #16a085;
+  margin-top: 20px;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# 제목
+st.markdown("""
+<h1 style='text-align:center; color:#ff6600; font-family:"Nanum Gothic", sans-serif; font-size:50px;'>
+✨ 오늘의 기분 & 명언 ✨
+</h1>
+<p style='text-align:center; color:gray; font-size:18px;'>
+오늘의 기분을 선택하면 어울리는 명언과 응원의 말을 드려요 🌷
+</p>
 """, unsafe_allow_html=True)
 
 # 감정 선택
 emotions = list(quotes.keys())
 selected_emotion = st.radio("오늘 당신의 기분은 어떤가요?", emotions, index=0, horizontal=True)
 
+# 버튼 클릭 시 명언 카드 출력
 if st.button("🌟 추천 받기 🌟", use_container_width=True):
     quote, author = random.choice(quotes[selected_emotion])
     encouragement = random.choice(encouragements)
 
     st.markdown(f"""
-        <div style="
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:450px;
-            background: linear-gradient(135deg, #f6d365, #fda085);
-            border-radius: 25px;
-            padding: 60px;
-            margin-top:40px;
-            box-shadow: 5px 5px 20px rgba(0,0,0,0.25);
-            ">
-            <div style="text-align:center;">
-                <h2 style="font-size:36px; color:#2c3e50; line-height:1.4; font-weight:bold;">“{quote}”</h2>
-                <p style="font-size:22px; color:#34495e; margin-top:15px;">– {author}</p>
-                <hr style="margin:30px 0; border:1px solid #ddd;">
-                <p style="font-size:20px; color:#16a085;">{encouragement}</p>
-            </div>
-        </div>
+    <div class="sparkle-card">
+      <div>
+        <div class="quote-text">“{quote}”</div>
+        <div class="quote-author">– {author} –</div>
+        <div class="quote-extra">{encouragement}</div>
+      </div>
+    </div>
     """, unsafe_allow_html=True)
-    
