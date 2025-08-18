@@ -44,7 +44,6 @@ encouragements = [
     "☀️ 행복한 하루가 계속되길 바랄게요."
 ]
 
-# Streamlit UI 설정
 st.set_page_config(page_title="오늘의 명언 추천", layout="wide")
 
 # 반짝이는 카드 CSS
@@ -56,7 +55,7 @@ st.markdown("""
   100% { box-shadow: 0 0 10px rgba(255,255,255,0.3); }
 }
 .sparkle-card {
-  animation: sparkle 1.5s ease-in-out 1;
+  animation: sparkle 1.5s ease-in-out 1; /* 한 번만 실행 */
   border-radius: 25px;
   padding: 60px;
   background: linear-gradient(135deg, #f6d365, #fda085);
@@ -99,12 +98,17 @@ st.markdown("""
 emotions = list(quotes.keys())
 selected_emotion = st.radio("오늘 당신의 기분은 어떤가요?", emotions, index=0, horizontal=True)
 
-# 버튼 클릭 시 명언 카드 출력
+# 카드 출력용 컨테이너
+card_placeholder = st.empty()
+
+# 버튼 클릭 시 카드 출력
 if st.button("🌟 추천 받기 🌟", use_container_width=True):
+    # 랜덤 명언 + 응원
     quote, author = random.choice(quotes[selected_emotion])
     encouragement = random.choice(encouragements)
 
-    st.markdown(f"""
+    # 카드 새로 렌더링
+    card_placeholder.markdown(f"""
     <div class="sparkle-card">
       <div>
         <div class="quote-text">“{quote}”</div>
