@@ -46,16 +46,10 @@ encouragements = [
 
 st.set_page_config(page_title="오늘의 명언 추천", layout="wide")
 
-# 반짝이는 카드 CSS
+# 카드 CSS (반짝임 제거, 깔끔하게)
 st.markdown("""
 <style>
-@keyframes sparkle {
-  0% { box-shadow: 0 0 10px rgba(255,255,255,0.3); }
-  50% { box-shadow: 0 0 25px rgba(255,255,255,0.8); }
-  100% { box-shadow: 0 0 10px rgba(255,255,255,0.3); }
-}
-.sparkle-card {
-  animation: sparkle 1.5s ease-in-out 1; /* 한 번만 실행 */
+.card {
   border-radius: 25px;
   padding: 60px;
   background: linear-gradient(135deg, #f6d365, #fda085);
@@ -64,6 +58,7 @@ st.markdown("""
   align-items: center;
   text-align: center;
   margin-top: 40px;
+  box-shadow: 2px 2px 12px rgba(0,0,0,0.2);
 }
 .quote-text {
   font-size: 36px;
@@ -103,13 +98,11 @@ card_placeholder = st.empty()
 
 # 버튼 클릭 시 카드 출력
 if st.button("🌟 추천 받기 🌟", use_container_width=True):
-    # 랜덤 명언 + 응원
     quote, author = random.choice(quotes[selected_emotion])
     encouragement = random.choice(encouragements)
 
-    # 카드 새로 렌더링
     card_placeholder.markdown(f"""
-    <div class="sparkle-card">
+    <div class="card">
       <div>
         <div class="quote-text">“{quote}”</div>
         <div class="quote-author">– {author} –</div>
