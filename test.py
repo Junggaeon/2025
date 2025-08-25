@@ -129,13 +129,14 @@ selected_emotion = st.radio("오늘 당신의 기분은 어떤가요?", emotions
 
 # 버튼 클릭 시 명언 카드 출력
 if st.button("🌟 추천 받기 🌟", use_container_width=True):
-    selected_quotes = random.sample(quotes[selected_emotion], k=2 if len(quotes[selected_emotion]) >= 2 else 1)
+    quote, author = random.choice(quotes[selected_emotion])
     encouragement = random.choice(encouragements)
 
     st.markdown(f"""
     <div class="sparkle-card">
       <div>
-        {''.join([f'<div class="quote-text">“{q[0]}”</div><div class="quote-author">– {q[1]} –</div>' for q in selected_quotes])}
+        <div class="quote-text">“{quote}”</div>
+        <div class="quote-author">– {author} –</div>
         <div class="quote-extra">{encouragement}</div>
       </div>
     </div>
