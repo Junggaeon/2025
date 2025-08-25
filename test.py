@@ -1,135 +1,92 @@
 import streamlit as st
 import random
 
-# 감정별 명언 데이터
+# 감정별 명언 데이터 (12개 감정)
 quotes = {
-    "행복": [
-        ("행복은 준비된 자에게 찾아온다.", "파스퇴르"),
-        ("행복은 우리가 가지는 것이 아니라, 우리가 느끼는 것이다.", "벤자민 프랭클린"),
-        ("작은 것에 감사할 때 행복은 커진다.", "에픽테토스"),
+    "기쁨 (Joy)": [
+        ("가장 큰 행복은 작은 것에서 옵니다.", "헨리 데이비드 소로우"),
+        ("행복은 향수와 같아서, 남에게 뿌리면 나에게도 조금은 묻는다.", "랄프 왈도 에머슨"),
+        ("웃음은 가장 값싼 약이다.", "아놀드 글래스고우")
     ],
-    "슬픔": [
-        ("눈물은 슬픔의 언어이다.", "볼테르"),
-        ("슬픔은 지나가지만, 그 흔적은 마음에 남는다.", "셰익스피어"),
-        ("어둠이 없다면 별도 빛나지 않는다.", "찰리 채플린"),
+    "슬픔 (Sadness)": [
+        ("눈물은 마음의 아픔이 흘러내리는 것이다.", "볼테르"),
+        ("슬픔은 우리가 사랑했음을 증명한다.", "레오 톨스토이"),
+        ("고통 속에서 성장한다.", "프리드리히 니체")
     ],
-    "분노": [
-        ("분노는 바람처럼 모든 것을 휩쓴다.", "셰익스피어"),
-        ("분노는 한순간의 광기다.", "호라티우스"),
-        ("분노를 다스리는 자가 가장 강한 자다.", "공자"),
+    "분노 (Anger)": [
+        ("분노는 잠깐의 광기다.", "호라티우스"),
+        ("화를 내는 것은 독을 마시고 상대가 죽기를 바라는 것과 같다.", "붓다"),
+        ("참을성은 쓴 뿌리를 가지고 있지만 달콤한 열매를 맺는다.", "아리스토텔레스")
     ],
-    "불안": [
-        ("불안은 우리가 아직 미래를 믿지 못하기 때문이다.", "키에르케고르"),
-        ("용기란 불안 속에서도 앞으로 나아가는 것이다.", "테오도르 루스벨트"),
-        ("불안은 마음의 그림자일 뿐이다.", "무명"),
+    "두려움 (Fear)": [
+        ("우리가 두려워해야 할 유일한 것은 두려움 그 자체다.", "프랭클린 D. 루스벨트"),
+        ("용기는 두려움의 부재가 아니라, 두려움보다 중요한 것을 선택하는 것이다.", "앰브로스 레드문"),
+        ("두려움은 무지에서 온다.", "랄프 왈도 에머슨")
     ],
-    "사랑": [
-        ("사랑은 서로 마주보는 것이 아니라, 같은 방향을 바라보는 것이다.", "생텍쥐페리"),
-        ("사랑은 나눌수록 커진다.", "파울로 코엘료"),
-        ("사랑은 영혼의 햇살이다.", "빅토르 위고"),
+    "놀람 (Surprise)": [
+        ("놀람은 모든 위대한 예술의 시작이다.", "랄프 왈도 에머슨"),
+        ("예상치 못한 일은 삶을 흥미롭게 만든다.", "파울로 코엘료"),
+        ("호기심은 놀라움의 또 다른 이름이다.", "알베르트 아인슈타인")
     ],
-    "외로움": [
-        ("외로움은 가장 충실한 친구이다.", "헤밍웨이"),
-        ("외로움은 우리를 성숙하게 만든다.", "칼 융"),
-        ("가장 큰 고독은 사람들 속에서 느낀다.", "괴테"),
+    "혐오 (Disgust)": [
+        ("혐오는 우리가 진실을 직면하지 못할 때 나온다.", "프리드리히 니체"),
+        ("부끄러움 없는 삶은 가장 큰 수치다.", "세네카"),
+        ("악을 보고도 분노하지 않는 것은 악에 동참하는 것이다.", "토마스 아퀴나스")
     ],
-    "희망": [
+    "기대 (Anticipation)": [
+        ("기대는 행복의 절반이다.", "조르주 상드"),
+        ("내일은 오늘 준비하는 자의 것이다.", "말콤 엑스"),
+        ("꿈꾸는 자만이 미래를 본다.", "칼 샌드버그")
+    ],
+    "신뢰 (Trust)": [
+        ("신뢰는 모든 인간 관계의 바탕이다.", "스티븐 코비"),
+        ("믿음은 산을 움직인다.", "예수 그리스도"),
+        ("신뢰를 잃으면 모든 것을 잃는다.", "에이브러햄 링컨")
+    ],
+    "사랑 (Love)": [
+        ("사랑은 삶의 최고의 기쁨이다.", "레프 톨스토이"),
+        ("사랑은 서로를 마주보는 것이 아니라, 같은 방향을 바라보는 것이다.", "생텍쥐페리"),
+        ("사랑은 두려움을 몰아낸다.", "성서")
+    ],
+    "외로움 (Loneliness)": [
+        ("인간의 위대한 발견은 혼자 있어도 괜찮다는 것이다.", "파울 틸리히"),
+        ("외로움은 인간의 본질이다.", "장 폴 사르트르"),
+        ("고독 속에서 자신을 발견한다.", "파블로 네루다")
+    ],
+    "불안 (Anxiety)": [
+        ("불안은 자유의 어지럼증이다.", "소렌 키에르케고르"),
+        ("걱정은 내일의 슬픔을 덜어주지 못하고 오늘의 힘만 앗아간다.", "코리 텐 붐"),
+        ("불안은 상상 속 괴물이다.", "세네카")
+    ],
+    "희망 (Hope)": [
         ("희망은 깨어있는 꿈이다.", "아리스토텔레스"),
-        ("희망은 영혼의 닻이다.", "에픽테토스"),
-        ("희망은 절망의 반대말이다.", "무명"),
-    ],
-    "두려움": [
-        ("두려움은 우리가 상상으로 만든 괴물이다.", "세네카"),
-        ("두려움을 극복하는 순간 자유를 얻는다.", "넬슨 만델라"),
-        ("두려움은 용기의 시작이다.", "무명"),
-    ],
-    "자신감": [
-        ("자신감을 가지면 이미 반은 성공한 것이다.", "시어도어 루스벨트"),
-        ("자신감을 가진 사람은 세상을 움직인다.", "에머슨"),
-        ("믿음은 자신감의 또 다른 이름이다.", "무명"),
-    ],
-    "감사": [
-        ("감사는 마음의 기억이다.", "장자크 루소"),
-        ("감사는 행복을 배가시킨다.", "에픽테토스"),
-        ("감사하는 마음은 기적을 부른다.", "오프라 윈프리"),
-    ],
+        ("희망은 영혼의 닻이다.", "성서"),
+        ("어둠 속에서도 별은 빛난다.", "빅토르 위고")
+    ]
 }
 
-encouragements = [
-    "오늘도 충분히 잘하고 있어요 🌸",
-    "당신의 하루에 작은 기적이 찾아올 거예요 ✨",
-    "스스로를 믿으세요, 당신은 충분히 멋진 사람이에요 💪",
-    "조금씩 나아가면 돼요, 멈추지만 않는다면 🌈",
-]
+# 페이지 설정
+st.set_page_config(page_title="감정과 명언", layout="centered")
 
-# 페이지 기본 설정
-st.set_page_config(page_title="오늘의 명언 추천", layout="wide")
+st.title("🌟 감정에 따른 명언 🌟")
+st.write("원하는 감정을 선택해보세요. 감정에 맞는 명언이 나옵니다.")
 
-# CSS (수정 전 기본 디자인 유지)
-st.markdown("""
-<style>
-@keyframes sparkle {
-  0% { box-shadow: 0 0 10px rgba(255,255,255,0.3); }
-  50% { box-shadow: 0 0 25px rgba(255,255,255,0.8); }
-  100% { box-shadow: 0 0 10px rgba(255,255,255,0.3); }
-}
-.sparkle-card {
-  animation: sparkle 1.5s ease-in-out 1;
-  border-radius: 25px;
-  padding: 40px;
-  background: linear-gradient(135deg, #f6d365, #fda085);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin-top: 30px;
-}
-.quote-text {
-  font-size: 28px;
-  font-weight: bold;
-  color: #2c3e50;
-  line-height: 1.4;
-}
-.quote-author {
-  font-size: 20px;
-  color: #34495e;
-  margin-top: 10px;
-}
-.quote-extra {
-  font-size: 18px;
-  color: #16a085;
-  margin-top: 15px;
-}
-</style>
-""", unsafe_allow_html=True)
+# 버튼 배치
+cols = st.columns(4)
 
-# 제목
-st.markdown("""
-<h1 style='text-align:center; color:#ff6600; font-family:"Nanum Gothic", sans-serif; font-size:50px;'>
-✨ 오늘의 기분 & 명언 ✨
-</h1>
-<p style='text-align:center; color:gray; font-size:18px;'>
-오늘의 기분을 선택하면 어울리는 명언과 응원의 말을 드려요 🌷
-</p>
-""", unsafe_allow_html=True)
-
-# 감정 선택
-emotions = list(quotes.keys())
-selected_emotion = st.radio("오늘 당신의 기분은 어떤가요?", emotions, index=0, horizontal=True)
-
-# 버튼 클릭 시 명언 카드 출력
-if st.button("🌟 추천 받기 🌟", use_container_width=True):
-    # 감정별로 명언 2~3개 랜덤 선택
-    selected_quotes = random.sample(quotes[selected_emotion], k=min(3, len(quotes[selected_emotion])))
-    encouragement = random.choice(encouragements)
-
-    for q, a in selected_quotes:
-        st.markdown(f"""
-        <div class="sparkle-card">
-          <div>
-            <div class="quote-text">“{q}”</div>
-            <div class="quote-author">– {a} –</div>
-            <div class="quote-extra">{encouragement}</div>
-          </div>
-        </div>
-        """, unsafe_allow_html=True)
+# 각 감정 버튼 생성
+for idx, (emotion, quote_list) in enumerate(quotes.items()):
+    with cols[idx % 4]:
+        if st.button(emotion):
+            chosen_quotes = random.sample(quote_list, 2)  # 2개 랜덤 출력
+            for q, author in chosen_quotes:
+                st.markdown(
+                    f"""
+                    <div style='padding:20px; margin:10px; border-radius:15px; background:linear-gradient(135deg,#ffecd2,#fcb69f); 
+                    box-shadow:0 0 20px rgba(0,0,0,0.2); text-align:center;'>
+                        <h3>“{q}”</h3>
+                        <p>- {author}</p>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
