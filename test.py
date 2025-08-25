@@ -1,112 +1,97 @@
 import streamlit as st
 import random
 
-# 감정별 명언 데이터베이스
+# 감정과 명언 데이터
 quotes = {
-    "설렘": [("미래를 꿈꾸는 자에게 현재는 이미 선물이다.", "알베르트 아인슈타인"),
-             ("무엇이든 할 수 있다고 믿는 순간, 이미 반은 이룬 것이다.", "시어도어 루즈벨트")],
-    "감사": [("감사는 고결한 영혼의 표시이다.", "에소푸스"),
-             ("우리가 감사할 줄 알 때, 행복은 이미 우리 곁에 있다.", "에픽테토스")],
-    "만족": [("만족은 우리가 가질 수 있는 가장 큰 부이다.", "소크라테스"),
-             ("행복은 우리가 원하는 것을 가지는 것이 아니라, 가진 것을 원하는 것이다.", "오스카 와일드")],
-    "기쁨": [("기쁨은 나눌수록 커진다.", "생텍쥐페리"),
-             ("순수한 기쁨은 언제나 단순한 것에서 온다.", "톨스토이")],
-    "즐거움": [("즐거움은 우리 삶을 지탱하는 가장 큰 힘이다.", "니체"),
-               ("즐거움은 사랑과 지혜의 결실이다.", "토마스 아퀴나스")],
-    "우울": [("우리가 두려워해야 할 것은 오직 두려움 그 자체뿐이다.", "프랭클린 D. 루즈벨트"),
-             ("이 또한 지나가리라.", "페르시아 속담")],
-    "외로움": [("고독은 위대한 정신의 학교이다.", "괴테"),
-               ("외로움은 위대한 영혼이 지불해야 하는 대가다.", "쇼펜하우어")],
-    "그리움": [("추억은 마음의 보물창고다.", "토마스 풀러"),
-               ("우정은 떨어져 있어도 그리움으로 연결된다.", "아리스토텔레스")],
-    "짜증": [("분노는 바보의 가슴 속에서만 오래 산다.", "알버트 아인슈타인"),
-             ("화를 내는 것은 독을 마시고 상대가 죽기를 바라는 것과 같다.", "붓다")],
-    "불안": [("불안은 자유의 현기증이다.", "키르케고르"),
-             ("걱정은 내일의 슬픔을 덜어주지 못하고 오늘의 힘만 앗아간다.", "코리 텐 붐")],
-    "답답함": [("어두운 밤일수록 별은 더 빛난다.", "찰스 A. 비어드"),
-               ("고난은 종종 평범한 사람을 비범한 운명으로 이끈다.", "C.S. 루이스")],
-    "지침": [("휴식은 게으름이 아니라 준비다.", "아리스토텔레스"),
-             ("몸은 잠시 쉬어도, 마음은 더 강해진다.", "마하트마 간디")],
-    "무기력": [("천 리 길도 한 걸음부터 시작된다.", "노자"),
-               ("작은 행동이 세상을 바꿀 수 있다.", "달라이 라마")],
-    "회복": [("상처는 회복될 때 더 강해진다.", "헤밍웨이"),
-             ("시간은 모든 상처를 치유한다.", "소포클레스")],
-    "기타": [("삶은 자기를 발견하는 여정이다.", "간디"),
-             ("가장 큰 영광은 한 번도 실패하지 않는 것이 아니라, 실패할 때마다 다시 일어서는 것이다.", "넬슨 만델라")]
+    "기쁨": [
+        ("행복은 우리가 다른 사람들에게 주는 선물에서 가장 크게 자란다.", "엘리너 루스벨트"),
+        ("매일 웃음을 잃지 말아라. 그것이 영혼의 음악이다.", "익명")
+    ],
+    "슬픔": [
+        ("눈물은 마음으로부터 오는 무언의 언어다.", "볼테르"),
+        ("고통은 지나가고, 아름다움은 남는다.", "피에르 오귀스트 르누아르")
+    ],
+    "분노": [
+        ("분노는 한순간의 광기다.", "호라티우스"),
+        ("화를 내는 것은 타인보다 자신에게 더 큰 해를 끼친다.", "버나드 쇼")
+    ],
+    "두려움": [
+        ("두려움은 우리가 극복해야 할 가장 큰 적이다.", "넬슨 만델라"),
+        ("두려움은 용기의 출발점이다.", "아리스토텔레스")
+    ],
+    "놀람": [
+        ("놀라움은 모든 지혜의 시작이다.", "소크라테스"),
+        ("세상은 매일 새로운 경이로움으로 가득 차 있다.", "칼 세이건")
+    ],
+    "혐오": [
+        ("우리는 우리가 싫어하는 것에서도 배울 수 있다.", "익명"),
+        ("싫어하는 것을 멀리할수록 내 마음은 가벼워진다.", "익명")
+    ],
+    "안도": [
+        ("걱정은 내일의 슬픔을 비워내지 못한다. 오히려 오늘의 힘을 빼앗을 뿐이다.", "코리 텐 붐"),
+        ("마음이 편안할 때 우리는 진정한 자신이 된다.", "익명")
+    ],
+    "죄책감": [
+        ("과거를 바꿀 수는 없지만, 미래를 바꿀 수는 있다.", "익명"),
+        ("죄책감은 더 나은 사람이 되라는 신호다.", "익명")
+    ],
+    "수치심": [
+        ("부끄러움은 인간을 성장시키는 또 다른 얼굴이다.", "익명"),
+        ("실수는 부끄러운 것이 아니라, 배움의 기회다.", "마하트마 간디")
+    ],
+    "사랑": [
+        ("사랑은 나눌수록 커지는 유일한 것이다.", "생텍쥐페리"),
+        ("사랑은 인생에서 가장 위대한 힘이다.", "마하트마 간디")
+    ],
+    "무관심": [
+        ("세상을 파괴하는 것은 미움이 아니라 무관심이다.", "엘리 위젤"),
+        ("무관심은 가장 잔인한 감정이다.", "오스카 와일드")
+    ],
+    "호기심": [
+        ("호기심은 배움의 불씨다.", "알버트 아인슈타인"),
+        ("질문하지 않는 삶은 성장하지 않는다.", "소크라테스")
+    ],
 }
 
-# 응원의 말 리스트
-encouragements = [
-    "🌸 오늘도 당신을 응원합니다!",
-    "😊 작은 기쁨이 큰 행복으로 이어지길 바랍니다.",
-    "💪 힘든 하루였다면, 내일은 더 밝게 빛날 거예요.",
-    "🌈 당신의 마음이 언제나 평온하기를 바랍니다.",
-    "☀️ 행복한 하루가 계속되길 바랄게요."
-]
-
-st.set_page_config(page_title="오늘의 명언 추천", layout="wide")
-
-# 카드 CSS (반짝임 제거, 깔끔하게)
-st.markdown("""
-<style>
-.card {
-  border-radius: 25px;
-  padding: 60px;
-  background: linear-gradient(135deg, #f6d365, #fda085);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin-top: 40px;
-  box-shadow: 2px 2px 12px rgba(0,0,0,0.2);
-}
-.quote-text {
-  font-size: 36px;
-  font-weight: bold;
-  color: #2c3e50;
-  line-height: 1.4;
-}
-.quote-author {
-  font-size: 22px;
-  color: #34495e;
-  margin-top: 15px;
-}
-.quote-extra {
-  font-size: 20px;
-  color: #16a085;
-  margin-top: 20px;
-}
-</style>
-""", unsafe_allow_html=True)
+# CSS (카드 반짝이는 효과)
+st.markdown(
+    """
+    <style>
+    body {
+        background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    }
+    .quote-card {
+        background: white;
+        border-radius: 20px;
+        padding: 25px;
+        margin-top: 20px;
+        text-align: center;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        animation: shimmer 2s infinite;
+    }
+    @keyframes shimmer {
+        0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+        50% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.9); }
+        100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # 제목
-st.markdown("""
-<h1 style='text-align:center; color:#ff6600; font-family:"Nanum Gothic", sans-serif; font-size:50px;'>
-✨ 오늘의 기분 & 명언 ✨
-</h1>
-<p style='text-align:center; color:gray; font-size:18px;'>
-오늘의 기분을 선택하면 어울리는 명언과 응원의 말을 드려요 🌷
-</p>
-""", unsafe_allow_html=True)
+st.title("🌟 감정과 명언 앱")
+st.write("지금 느끼는 감정을 선택하면, 그에 맞는 명언이 카드와 함께 나타납니다.")
 
 # 감정 선택
-emotions = list(quotes.keys())
-selected_emotion = st.radio("오늘 당신의 기분은 어떤가요?", emotions, index=0, horizontal=True)
+emotion = st.selectbox("감정을 선택하세요", list(quotes.keys()))
 
-# 카드 출력용 컨테이너
-card_placeholder = st.empty()
-
-# 버튼 클릭 시 카드 출력
-if st.button("🌟 추천 받기 🌟", use_container_width=True):
-    quote, author = random.choice(quotes[selected_emotion])
-    encouragement = random.choice(encouragements)
-
-    card_placeholder.markdown(f"""
-    <div class="card">
-      <div>
-        <div class="quote-text">“{quote}”</div>
-        <div class="quote-author">– {author} –</div>
-        <div class="quote-extra">{encouragement}</div>
-      </div>
-    </div>
+if emotion:
+    quote, author = random.choice(quotes[emotion])
+    st.markdown(f"""
+        <div class="quote-card">
+            <h2>{emotion}</h2>
+            <p style='font-size:20px;'>“{quote}”</p>
+            <p><i>- {author}</i></p>
+        </div>
     """, unsafe_allow_html=True)
